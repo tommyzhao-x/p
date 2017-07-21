@@ -1,0 +1,18 @@
+[alias]           
+co=checkout           
+ci=commit           
+st=status           
+pl=pull           
+ps=push           
+dt=difftool           
+l=log—stat           
+cp=cherry-pick           
+ca=commit-a           
+b=branch
+[user]
+	name = ZhaoGangTao
+	email = zhaogangtao@example.com
+[url "git@syncsvn.example.co:"]
+	insteadOf = http://syncsvn.example.co/
+[core]
+	autocrlf = input
