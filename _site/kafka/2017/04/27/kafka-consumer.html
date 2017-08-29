@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>赵钢涛</title>
-  <meta name="description" content="">
+  <title>Kafka中有两种consumer接口</title>
+  <meta name="description" content="Kafka consumer">
 
   <link rel="stylesheet" href="/p/assets/main.css">
-  <link rel="canonical" href="http://localhost:4000/p/">
+  <link rel="canonical" href="http://localhost:4000/p/kafka/2017/04/27/kafka-consumer.html">
   <link rel="alternate" type="application/rss+xml" title="赵钢涛" href="/p/feed.xml">
   
   
@@ -67,56 +67,37 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Kafka中有两种consumer接口</h1>
+    <p class="post-meta">
+      <time datetime="2017-04-27T20:34:38+08:00" itemprop="datePublished">
+        
+        Apr 27, 2017
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="kafka-consumer">Kafka consumer</h1>
+
+<p>Kafka中有两种consumer接口，分别为Low-level API和High-levelAPI</p>
+
+<h2 id="low-level-api--simpleconsumer">Low-level API  SimpleConsumer</h2>
+<blockquote>
+  <p>这套接口比较复杂的，使用者必须要考虑很多事情，优点就是对Kafka可以有完全的控制。</p>
+</blockquote>
+
+<h2 id="high-level-api-zookeeperconsumerconnector">High-level API ZookeeperConsumerConnector</h2>
+<blockquote>
+  <p>High-level API使用比较简单，已经封装了对partition和offset的管理，默认是会定期自动commit offset，这样可能会丢数据的，因为consumer可能拿到数据没有处理完crash。 High-level API接口的特点，自动管理，使用简单，但是对Kafka的控制不够灵活。</p>
+</blockquote>
+
+  </div>
+
   
-  
-
-
-  <ul class="post-list">
-    
-      <li>
-        
-        <span class="post-meta">Aug 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/p/jekyll/update/2017/08/29/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Aug 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/p/go/2017/08/29/go-internal-ip-address.html">Golang获取本机IP地址</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Apr 27, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/p/kafka/2017/04/27/kafka-consumer.html">Kafka中有两种consumer接口</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Apr 27, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/p/jekyll/update/2017/04/27/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/p/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </main>

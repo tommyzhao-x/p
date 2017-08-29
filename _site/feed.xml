@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-04-27T11:54:00+08:00</updated><id>http://localhost:4000/</id><title type="html">Tommy’s Blog</title><subtitle></subtitle><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2017/04/27/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-04-27T10:34:38+08:00</published><updated>2017-04-27T10:34:38+08:00</updated><id>http://localhost:4000/jekyll/update/2017/04/27/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2017/04/27/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/p/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/p/" rel="alternate" type="text/html" /><updated>2017-08-29T22:43:33+08:00</updated><id>http://localhost:4000/p/</id><title type="html">赵钢涛</title><subtitle></subtitle><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/p/jekyll/update/2017/08/29/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-08-29T22:16:35+08:00</published><updated>2017-08-29T22:16:35+08:00</updated><id>http://localhost:4000/p/jekyll/update/2017/08/29/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/p/jekyll/update/2017/08/29/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
 
 &lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
 
@@ -10,7 +10,97 @@
 &lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry><entry><title type="html">First!</title><link href="http://localhost:4000/jekyll/update/2017/04/27/first.html" rel="alternate" type="text/html" title="First!" /><published>2017-04-27T10:34:38+08:00</published><updated>2017-04-27T10:34:38+08:00</updated><id>http://localhost:4000/jekyll/update/2017/04/27/first</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2017/04/27/first.html">&lt;h1 id=&quot;test&quot;&gt;test&lt;/h1&gt;
+&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry><entry><title type="html">Golang获取本机IP地址</title><link href="http://localhost:4000/p/go/2017/08/29/go-internal-ip-address.html" rel="alternate" type="text/html" title="Golang获取本机IP地址" /><published>2017-08-29T20:34:38+08:00</published><updated>2017-08-29T20:34:38+08:00</updated><id>http://localhost:4000/p/go/2017/08/29/go-internal-ip-address</id><content type="html" xml:base="http://localhost:4000/p/go/2017/08/29/go-internal-ip-address.html">&lt;h1 id=&quot;golang获取本机ip地址&quot;&gt;Golang获取本机IP地址&lt;/h1&gt;
+
+&lt;h2 id=&quot;引子&quot;&gt;引子&lt;/h2&gt;
+&lt;p&gt;最近有次灰度发版后，发现RPC client获取到一个莫名的RPC server ip，通过服务注册的管理界面也能看到这个IP，排查后发现是当前灰度的机器，但是此机器的IP并不是注册的ip。&lt;/p&gt;
+
+&lt;p&gt;排查代码后发现，先有注册的逻辑是这样的:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// InternalIP get internal ip.
+func InternalIP() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return &quot;&quot;
+	}
+	for _, a := range addrs {
+		if ipnet, ok := a.(*net.IPNet); ok &amp;amp;&amp;amp; !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String()
+			}
+		}
+	}
+	return &quot;&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;获取排除loopback地址后的ip。&lt;/p&gt;
+
+&lt;p&gt;But, 诡异的地方就是这个IsLoopback:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// IsLoopback reports whether ip is a loopback address.
+func (ip IP) IsLoopback() bool {
+	if ip4 := ip.To4(); ip4 != nil {
+		return ip4[0] == 127
+	}
+	return ip.Equal(IPv6loopback)
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;它是通过判断非127开头的IP来判断的。&lt;/p&gt;
+
+&lt;p&gt;但是，我们服务灰度的这台物理机上绑定了个loopbakc，ip为：172开头。
+so，逻辑失效。
+发现问题后，更改了下获取本机IP的逻辑，如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// InternalIP get internal ip.
+func InternalIP() string {
+	inters, err := net.Interfaces()
+	if err != nil {
+		return &quot;&quot;
+	}
+	for _, inter := range inters {
+		if !strings.HasPrefix(inter.Name, &quot;lo&quot;) {
+			addrs, err := inter.Addrs()
+			if err != nil {
+				continue
+			}
+			for _, addr := range addrs {
+				if ipnet, ok := addr.(*net.IPNet); ok &amp;amp;&amp;amp; !ipnet.IP.IsLoopback() {
+					if ipnet.IP.To4() != nil {
+						return ipnet.IP.String()
+					}
+				}
+			}
+		}
+	}
+	return &quot;&quot;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Golang获取本机IP地址</summary></entry><entry><title type="html">Kafka中有两种consumer接口</title><link href="http://localhost:4000/p/kafka/2017/04/27/kafka-consumer.html" rel="alternate" type="text/html" title="Kafka中有两种consumer接口" /><published>2017-04-27T20:34:38+08:00</published><updated>2017-04-27T20:34:38+08:00</updated><id>http://localhost:4000/p/kafka/2017/04/27/kafka-consumer</id><content type="html" xml:base="http://localhost:4000/p/kafka/2017/04/27/kafka-consumer.html">&lt;h1 id=&quot;kafka-consumer&quot;&gt;Kafka consumer&lt;/h1&gt;
+
+&lt;p&gt;Kafka中有两种consumer接口，分别为Low-level API和High-levelAPI&lt;/p&gt;
+
+&lt;h2 id=&quot;low-level-api--simpleconsumer&quot;&gt;Low-level API  SimpleConsumer&lt;/h2&gt;
 &lt;blockquote&gt;
-  &lt;p&gt;first line&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">test first line</summary></entry></feed>
+  &lt;p&gt;这套接口比较复杂的，使用者必须要考虑很多事情，优点就是对Kafka可以有完全的控制。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;high-level-api-zookeeperconsumerconnector&quot;&gt;High-level API ZookeeperConsumerConnector&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;High-level API使用比较简单，已经封装了对partition和offset的管理，默认是会定期自动commit offset，这样可能会丢数据的，因为consumer可能拿到数据没有处理完crash。 High-level API接口的特点，自动管理，使用简单，但是对Kafka的控制不够灵活。&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">Kafka consumer</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/p/jekyll/update/2017/04/27/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-04-27T10:34:38+08:00</published><updated>2017-04-27T10:34:38+08:00</updated><id>http://localhost:4000/p/jekyll/update/2017/04/27/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/p/jekyll/update/2017/04/27/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry></feed>

@@ -25,8 +25,8 @@ minima:
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-cayman
-gems:
+theme: minima
+plugins:
   - jekyll-feed
 exclude:
   - Gemfile
