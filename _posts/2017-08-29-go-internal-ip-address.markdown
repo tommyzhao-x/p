@@ -1,0 +1,77 @@
+---
+layout: post
+title:  "Golang获取本机IP地址"
+date:   2017-08-29 20:34:38 +0800
+categories: go
+---
+
+# Golang获取本机IP地址
+
+## 引子
+最近有次灰度发版后，发现RPC client获取到一个莫名的RPC server ip，通过服务注册的管理界面也能看到这个IP，排查后发现是当前灰度的机器，但是此机器的IP并不是注册的ip。
+
+排查代码后发现，先有注册的逻辑是这样的:
+
+```
+// InternalIP get internal ip.
+func InternalIP() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return ""
+	}
+	for _, a := range addrs {
+		if ipnet, ok := a.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String()
+			}
+		}
+	}
+	return ""
+}
+```
+获取排除loopback地址后的ip。
+
+But, 诡异的地方就是这个IsLoopback:
+
+```
+// IsLoopback reports whether ip is a loopback address.
+func (ip IP) IsLoopback() bool {
+	if ip4 := ip.To4(); ip4 != nil {
+		return ip4[0] == 127
+	}
+	return ip.Equal(IPv6loopback)
+}
+
+```
+它是通过判断非127开头的IP来判断的。
+
+但是，我们服务灰度的这台物理机上绑定了个loopbakc，ip为：172开头。
+so，逻辑失效。
+发现问题后，更改了下获取本机IP的逻辑，如下：
+
+```
+// InternalIP get internal ip.
+func InternalIP() string {
+	inters, err := net.Interfaces()
+	if err != nil {
+		return ""
+	}
+	for _, inter := range inters {
+		if !strings.HasPrefix(inter.Name, "lo") {
+			addrs, err := inter.Addrs()
+			if err != nil {
+				continue
+			}
+			for _, addr := range addrs {
+				if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+					if ipnet.IP.To4() != nil {
+						return ipnet.IP.String()
+					}
+				}
+			}
+		}
+	}
+	return ""
+}
+
+```
