@@ -1,7 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/p/feed.xml" rel="self" type="application/atom+xml" /><link href="/p/" rel="alternate" type="text/html" /><updated>2018-01-02T17:11:47+08:00</updated><id>/p/</id><title type="html">tommy的博客</title><subtitle></subtitle><entry><title type="html">Golang compile tool</title><link href="/p/go/2017/11/21/go-tool-compile.html" rel="alternate" type="text/html" title="Golang compile tool" /><published>2017-11-21T20:34:38+08:00</published><updated>2017-11-21T20:34:38+08:00</updated><id>/p/go/2017/11/21/go-tool-compile</id><content type="html" xml:base="/p/go/2017/11/21/go-tool-compile.html">&lt;h1 id=&quot;golang-compile-tool&quot;&gt;Golang compile tool&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="http://localhost:4000/p/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/p/" rel="alternate" type="text/html" /><updated>2018-07-10T09:42:06+08:00</updated><id>http://localhost:4000/p/</id><title type="html">tommy的博客</title><subtitle></subtitle><entry><title type="html">Deploy jar to mvn nexus repository</title><link href="http://localhost:4000/p/mvn/2018/01/02/mvn-deplpy-to-nexus.html" rel="alternate" type="text/html" title="Deploy jar to mvn nexus repository" /><published>2018-01-02T17:34:38+08:00</published><updated>2018-01-02T17:34:38+08:00</updated><id>http://localhost:4000/p/mvn/2018/01/02/mvn-deplpy-to-nexus</id><content type="html" xml:base="http://localhost:4000/p/mvn/2018/01/02/mvn-deplpy-to-nexus.html">&lt;h1 id=&quot;deploy-jar-to-mvn-nexus-repository&quot;&gt;Deploy jar to mvn nexus repository&lt;/h1&gt;
+
+&lt;h2 id=&quot;add-server-config-to-settingsxml&quot;&gt;Add server config to settings.xml&lt;/h2&gt;
+&lt;p&gt;进入.m2文件夹，更改settings.xml，添加server配置&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &amp;lt;server&amp;gt;
+       &amp;lt;id&amp;gt;my-nexus-release-server&amp;lt;/id&amp;gt;
+       &amp;lt;username&amp;gt;xxxx&amp;lt;/username&amp;gt;
+       &amp;lt;password&amp;gt;xxxx&amp;lt;/password&amp;gt;
+     &amp;lt;/server&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;h2 id=&quot;更改pomxml&quot;&gt;更改pom.xml&lt;/h2&gt;
+&lt;p&gt;新增deploy仓库配置：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;distributionManagement&amp;gt;
+		&amp;lt;repository&amp;gt;
+			&amp;lt;id&amp;gt;my-nexus-release-server&amp;lt;/id&amp;gt;
+			&amp;lt;name&amp;gt;Internal Releases&amp;lt;/name&amp;gt;
+			&amp;lt;url&amp;gt;http://nexus.my.co/content/repositories/releases&amp;lt;/url&amp;gt;
+		&amp;lt;/repository&amp;gt;
+		&amp;lt;snapshotRepository&amp;gt;
+			&amp;lt;id&amp;gt;my-nexus-snapshots-server&amp;lt;/id&amp;gt;
+			&amp;lt;name&amp;gt;Internal Snapshots&amp;lt;/name&amp;gt;
+			&amp;lt;url&amp;gt;http://nexus.my.co/content/repositories/snapshots&amp;lt;/url&amp;gt;
+		&amp;lt;/snapshotRepository&amp;gt;
+	&amp;lt;/distributionManagement&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;如果要上传source包，新增：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;plugin&amp;gt;
+    &amp;lt;artifactId&amp;gt;maven-source-plugin&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;3.0.1&amp;lt;/version&amp;gt;
+    &amp;lt;configuration&amp;gt;
+        &amp;lt;attach&amp;gt;true&amp;lt;/attach&amp;gt;
+    &amp;lt;/configuration&amp;gt;
+    &amp;lt;executions&amp;gt;
+        &amp;lt;execution&amp;gt;
+            &amp;lt;phase&amp;gt;compile&amp;lt;/phase&amp;gt;
+            &amp;lt;goals&amp;gt;
+                &amp;lt;goal&amp;gt;jar&amp;lt;/goal&amp;gt;
+            &amp;lt;/goals&amp;gt;
+        &amp;lt;/execution&amp;gt;
+    &amp;lt;/executions&amp;gt;
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Deploy jar to mvn nexus repository</summary></entry><entry><title type="html">Golang compile tool</title><link href="http://localhost:4000/p/go/2017/11/21/go-tool-compile.html" rel="alternate" type="text/html" title="Golang compile tool" /><published>2017-11-21T20:34:38+08:00</published><updated>2017-11-21T20:34:38+08:00</updated><id>http://localhost:4000/p/go/2017/11/21/go-tool-compile</id><content type="html" xml:base="http://localhost:4000/p/go/2017/11/21/go-tool-compile.html">&lt;h1 id=&quot;golang-compile-tool&quot;&gt;Golang compile tool&lt;/h1&gt;
 
 &lt;h2 id=&quot;command&quot;&gt;Command&lt;/h2&gt;
-&lt;p&gt;go tool compile -m -importmap go-common/log=tlog/vendor/go-common/log -D /Users/tommy/work/src/tlog  -I /Users/tommy/work/pkg/darwin_amd64  -S  main.go &amp;gt; test/test1.s&lt;/p&gt;</content><author><name></name></author><summary type="html">Golang compile tool</summary></entry><entry><title type="html">Golang获取本机IP地址</title><link href="/p/go/2017/08/29/go-internal-ip-address.html" rel="alternate" type="text/html" title="Golang获取本机IP地址" /><published>2017-08-29T20:34:38+08:00</published><updated>2017-08-29T20:34:38+08:00</updated><id>/p/go/2017/08/29/go-internal-ip-address</id><content type="html" xml:base="/p/go/2017/08/29/go-internal-ip-address.html">&lt;h1 id=&quot;golang获取本机ip地址&quot;&gt;Golang获取本机IP地址&lt;/h1&gt;
+&lt;p&gt;go tool compile -m -importmap go-common/log=tlog/vendor/go-common/log -D /Users/tommy/work/src/tlog  -I /Users/tommy/work/pkg/darwin_amd64  -S  main.go &amp;gt; test/test1.s&lt;/p&gt;</content><author><name></name></author><summary type="html">Golang compile tool</summary></entry><entry><title type="html">Golang获取本机IP地址</title><link href="http://localhost:4000/p/go/2017/08/29/go-internal-ip-address.html" rel="alternate" type="text/html" title="Golang获取本机IP地址" /><published>2017-08-29T20:34:38+08:00</published><updated>2017-08-29T20:34:38+08:00</updated><id>http://localhost:4000/p/go/2017/08/29/go-internal-ip-address</id><content type="html" xml:base="http://localhost:4000/p/go/2017/08/29/go-internal-ip-address.html">&lt;h1 id=&quot;golang获取本机ip地址&quot;&gt;Golang获取本机IP地址&lt;/h1&gt;
 
 &lt;h2 id=&quot;引子&quot;&gt;引子&lt;/h2&gt;
 &lt;p&gt;最近有次灰度发版后，发现RPC client获取到一个莫名的RPC server ip，通过服务注册的管理界面也能看到这个IP，排查后发现是当前灰度的机器，但是此机器的IP并不是注册的ip。&lt;/p&gt;
@@ -70,7 +114,7 @@ func InternalIP() string {
 }
 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Golang获取本机IP地址</summary></entry><entry><title type="html">Kafka中有两种consumer接口</title><link href="/p/kafka/2017/04/27/kafka-consumer.html" rel="alternate" type="text/html" title="Kafka中有两种consumer接口" /><published>2017-04-27T20:34:38+08:00</published><updated>2017-04-27T20:34:38+08:00</updated><id>/p/kafka/2017/04/27/kafka-consumer</id><content type="html" xml:base="/p/kafka/2017/04/27/kafka-consumer.html">&lt;h1 id=&quot;kafka-consumer&quot;&gt;Kafka consumer&lt;/h1&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Golang获取本机IP地址</summary></entry><entry><title type="html">Kafka中有两种consumer接口</title><link href="http://localhost:4000/p/kafka/2017/04/27/kafka-consumer.html" rel="alternate" type="text/html" title="Kafka中有两种consumer接口" /><published>2017-04-27T20:34:38+08:00</published><updated>2017-04-27T20:34:38+08:00</updated><id>http://localhost:4000/p/kafka/2017/04/27/kafka-consumer</id><content type="html" xml:base="http://localhost:4000/p/kafka/2017/04/27/kafka-consumer.html">&lt;h1 id=&quot;kafka-consumer&quot;&gt;Kafka consumer&lt;/h1&gt;
 
 &lt;p&gt;Kafka中有两种consumer接口，分别为Low-level API和High-levelAPI&lt;/p&gt;
 
@@ -82,7 +126,7 @@ func InternalIP() string {
 &lt;h2 id=&quot;high-level-api-zookeeperconsumerconnector&quot;&gt;High-level API ZookeeperConsumerConnector&lt;/h2&gt;
 &lt;blockquote&gt;
   &lt;p&gt;High-level API使用比较简单，已经封装了对partition和offset的管理，默认是会定期自动commit offset，这样可能会丢数据的，因为consumer可能拿到数据没有处理完crash。 High-level API接口的特点，自动管理，使用简单，但是对Kafka的控制不够灵活。&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">Kafka consumer</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="/p/jekyll/update/2017/04/27/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-04-27T10:34:38+08:00</published><updated>2017-04-27T10:34:38+08:00</updated><id>/p/jekyll/update/2017/04/27/welcome-to-jekyll</id><content type="html" xml:base="/p/jekyll/update/2017/04/27/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">Kafka consumer</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/p/jekyll/update/2017/04/27/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-04-27T10:34:38+08:00</published><updated>2017-04-27T10:34:38+08:00</updated><id>http://localhost:4000/p/jekyll/update/2017/04/27/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/p/jekyll/update/2017/04/27/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
 
 &lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
 
