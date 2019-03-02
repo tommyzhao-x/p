@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Deploy jar to mvn nexus repository</title>
-  <meta name="description" content="Deploy jar to mvn nexus repository">
+  <title>如何解决git squash merge冲突</title>
+  <meta name="description" content="如何解决git squash merge冲突">
 
   <link rel="stylesheet" href="/p/assets/main.css">
-  <link rel="canonical" href="/p/mvn/2018/01/02/mvn-deplpy-to-nexus.html">
+  <link rel="canonical" href="/p/gitl/2019/03/01/git-squash-merge.html">
   <link rel="alternate" type="application/rss+xml" title="TommyZhao" href="/p/feed.xml">
   
   
@@ -70,61 +70,51 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Deploy jar to mvn nexus repository</h1>
+    <h1 class="post-title" itemprop="name headline">如何解决git squash merge冲突</h1>
     <p class="post-meta">
-      <time datetime="2018-01-02T17:34:38+08:00" itemprop="datePublished">
+      <time datetime="2019-03-01T00:00:00+08:00" itemprop="datePublished">
         
-        Jan 2, 2018
+        Mar 1, 2019
       </time>
       </p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h1 id="deploy-jar-to-mvn-nexus-repository">Deploy jar to mvn nexus repository</h1>
+    <h1 id="如何解决git-squash-merge冲突">如何解决git squash merge冲突</h1>
 
-<h2 id="add-server-config-to-settingsxml">Add server config to settings.xml</h2>
-<p>进入.m2文件夹，更改settings.xml，添加server配置</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>    &lt;server&gt;
-       &lt;id&gt;my-nexus-release-server&lt;/id&gt;
-       &lt;username&gt;xxxx&lt;/username&gt;
-       &lt;password&gt;xxxx&lt;/password&gt;
-     &lt;/server&gt;
-</code></pre>
-</div>
-<h2 id="更改pomxml">更改pom.xml</h2>
-<p>新增deploy仓库配置：</p>
-<div class="highlighter-rouge"><pre class="highlight"><code> &lt;distributionManagement&gt;
-		&lt;repository&gt;
-			&lt;id&gt;my-nexus-release-server&lt;/id&gt;
-			&lt;name&gt;Internal Releases&lt;/name&gt;
-			&lt;url&gt;http://nexus.my.co/content/repositories/releases&lt;/url&gt;
-		&lt;/repository&gt;
-		&lt;snapshotRepository&gt;
-			&lt;id&gt;my-nexus-snapshots-server&lt;/id&gt;
-			&lt;name&gt;Internal Snapshots&lt;/name&gt;
-			&lt;url&gt;http://nexus.my.co/content/repositories/snapshots&lt;/url&gt;
-		&lt;/snapshotRepository&gt;
-	&lt;/distributionManagement&gt;
-</code></pre>
-</div>
-<p>如果要上传source包，新增：</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;plugin&gt;
-    &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;
-    &lt;version&gt;3.0.1&lt;/version&gt;
-    &lt;configuration&gt;
-        &lt;attach&gt;true&lt;/attach&gt;
-    &lt;/configuration&gt;
-    &lt;executions&gt;
-        &lt;execution&gt;
-            &lt;phase&gt;compile&lt;/phase&gt;
-            &lt;goals&gt;
-                &lt;goal&gt;jar&lt;/goal&gt;
-            &lt;/goals&gt;
-        &lt;/execution&gt;
-    &lt;/executions&gt;
-&lt;/plugin&gt;
-</code></pre>
-</div>
+<h2 id="背景">背景</h2>
+
+<p>公司项目使用了git大仓库管理代码，同一个仓库下会有多个业务代码。</p>
+
+<p>平日里近百个开发在里面提交变更.</p>
+
+<p>为了保证master的commit记录整洁，在提交mr时默认开启了gitlab的‘Squash commits when merge request is accepted’。</p>
+
+<p>当有多部门系统开发时，有时会出现多部门同时基于一个非稳定分支开发（为了保持快速业务迭代）。</p>
+
+<p>比如基础部门从master切出新分支，开发基础API，这里标记为：dev_base，在目录dev/app/base下coding。</p>
+
+<p>当dev_base完成基础api开发，后部门A基于dev_base checkout一个分支：dev_a，在目录dev/app/a下coding，会引用dev/app/base的api。</p>
+
+<p>后续dev_base和dev_a并行开发。</p>
+
+<p>但是当dev_base开发完成，使用squash commits功能合并了master后。</p>
+
+<p>这时dev_a合并master时，会在目录dev/app/base下存在大量冲突，然而他们从未变更过这个目录。</p>
+
+<h2 id="如何正确解决这个冲突">如何正确解决这个冲突：</h2>
+
+<p>先给出答案：</p>
+
+<blockquote>
+  <p>git merge –squash dev_base <br />
+git pull origin master  <br />
+git push origin dev_a</p>
+</blockquote>
+
+<h2 id="这里发生了什么">这里发生了什么？</h2>
+
+<p>todo</p>
 
   </div>
 

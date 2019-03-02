@@ -1,4 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/p/feed.xml" rel="self" type="application/atom+xml" /><link href="/p/" rel="alternate" type="text/html" /><updated>2019-03-01T22:05:15+08:00</updated><id>/p/</id><title type="html">tommy的博客</title><subtitle></subtitle><entry><title type="html">Java项目问题排查规则</title><link href="/p/mvn/2018/07/10/java-product-troubshoting.html" rel="alternate" type="text/html" title="Java项目问题排查规则" /><published>2018-07-10T09:34:38+08:00</published><updated>2018-07-10T09:34:38+08:00</updated><id>/p/mvn/2018/07/10/java-product-troubshoting</id><content type="html" xml:base="/p/mvn/2018/07/10/java-product-troubshoting.html">&lt;h2 id=&quot;问题分类&quot;&gt;问题分类&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/p/feed.xml" rel="self" type="application/atom+xml" /><link href="/p/" rel="alternate" type="text/html" /><updated>2019-03-02T13:54:02+08:00</updated><id>/p/</id><title type="html">TommyZhao</title><subtitle></subtitle><entry><title type="html">如何解决git squash merge冲突</title><link href="/p/gitl/2019/03/01/git-squash-merge.html" rel="alternate" type="text/html" title="如何解决git squash merge冲突" /><published>2019-03-01T00:00:00+08:00</published><updated>2019-03-01T00:00:00+08:00</updated><id>/p/gitl/2019/03/01/git-squash-merge</id><content type="html" xml:base="/p/gitl/2019/03/01/git-squash-merge.html">&lt;h1 id=&quot;如何解决git-squash-merge冲突&quot;&gt;如何解决git squash merge冲突&lt;/h1&gt;
+
+&lt;h2 id=&quot;背景&quot;&gt;背景&lt;/h2&gt;
+
+&lt;p&gt;公司项目使用了git大仓库管理代码，同一个仓库下会有多个业务代码。&lt;/p&gt;
+
+&lt;p&gt;平日里近百个开发在里面提交变更.&lt;/p&gt;
+
+&lt;p&gt;为了保证master的commit记录整洁，在提交mr时默认开启了gitlab的‘Squash commits when merge request is accepted’。&lt;/p&gt;
+
+&lt;p&gt;当有多部门系统开发时，有时会出现多部门同时基于一个非稳定分支开发（为了保持快速业务迭代）。&lt;/p&gt;
+
+&lt;p&gt;比如基础部门从master切出新分支，开发基础API，这里标记为：dev_base，在目录dev/app/base下coding。&lt;/p&gt;
+
+&lt;p&gt;当dev_base完成基础api开发，后部门A基于dev_base checkout一个分支：dev_a，在目录dev/app/a下coding，会引用dev/app/base的api。&lt;/p&gt;
+
+&lt;p&gt;后续dev_base和dev_a并行开发。&lt;/p&gt;
+
+&lt;p&gt;但是当dev_base开发完成，使用squash commits功能合并了master后。&lt;/p&gt;
+
+&lt;p&gt;这时dev_a合并master时，会在目录dev/app/base下存在大量冲突，然而他们从未变更过这个目录。&lt;/p&gt;
+
+&lt;h2 id=&quot;如何正确解决这个冲突&quot;&gt;如何正确解决这个冲突：&lt;/h2&gt;
+
+&lt;p&gt;先给出答案：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;git merge –squash dev_base &lt;br /&gt;
+git pull origin master  &lt;br /&gt;
+git push origin dev_a&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;这里发生了什么&quot;&gt;这里发生了什么？&lt;/h2&gt;
+
+&lt;p&gt;todo&lt;/p&gt;</content><author><name></name></author><summary type="html">如何解决git squash merge冲突</summary></entry><entry><title type="html">Java项目问题排查规则</title><link href="/p/mvn/2018/07/10/java-product-troubshoting.html" rel="alternate" type="text/html" title="Java项目问题排查规则" /><published>2018-07-10T09:34:38+08:00</published><updated>2018-07-10T09:34:38+08:00</updated><id>/p/mvn/2018/07/10/java-product-troubshoting</id><content type="html" xml:base="/p/mvn/2018/07/10/java-product-troubshoting.html">&lt;h2 id=&quot;问题分类&quot;&gt;问题分类&lt;/h2&gt;
 
 &lt;ol&gt;
   &lt;li&gt;CPU占用率高&lt;/li&gt;
