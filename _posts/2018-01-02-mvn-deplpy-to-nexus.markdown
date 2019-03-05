@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Deploy jar to mvn nexus repository"
 date:   2018-01-02 17:34:38 +0800
 categories: mvn

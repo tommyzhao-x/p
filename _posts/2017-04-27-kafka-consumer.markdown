@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Kafka中有两种consumer接口"
 date:   2017-04-27 20:34:38 +0800
 categories: kafka

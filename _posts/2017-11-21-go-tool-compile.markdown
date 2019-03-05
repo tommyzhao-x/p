@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Golang compile tool"
 date:   2017-11-21 20:34:38 +0800
 categories: go

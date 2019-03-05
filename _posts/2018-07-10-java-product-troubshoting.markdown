@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Java项目问题排查规则"
 date:   2018-07-10 09:34:38 +0800
 categories: mvn

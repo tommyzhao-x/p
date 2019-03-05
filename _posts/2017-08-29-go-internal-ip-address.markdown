@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Golang获取本机IP地址"
 date:   2017-08-29 20:34:38 +0800
 categories: go

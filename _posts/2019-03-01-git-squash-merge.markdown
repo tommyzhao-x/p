@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "如何解决git squash merge冲突"
 date:   2019-03-01 00:00:00 +0800
 categories: gitl
