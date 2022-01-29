@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>在golang中如何保障一个func只会执行一次 | TommyZhao</title>
+<meta name="generator" content="Jekyll v4.2.1" />
+<meta property="og:title" content="在golang中如何保障一个func只会执行一次" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="在golang中如何保障一个func只会执行一次" />
+<meta property="og:description" content="在golang中如何保障一个func只会执行一次" />
+<link rel="canonical" href="https://blog.zhaogangtao.cn//golang/2022/01/29/golang-sync-once.html" />
+<meta property="og:url" content="https://blog.zhaogangtao.cn//golang/2022/01/29/golang-sync-once.html" />
+<meta property="og:site_name" content="TommyZhao" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-01-29T00:00:00+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="在golang中如何保障一个func只会执行一次" />
+<script type="application/ld+json">
+{"url":"https://blog.zhaogangtao.cn//golang/2022/01/29/golang-sync-once.html","headline":"在golang中如何保障一个func只会执行一次","dateModified":"2022-01-29T00:00:00+08:00","datePublished":"2022-01-29T00:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zhaogangtao.cn//golang/2022/01/29/golang-sync-once.html"},"description":"在golang中如何保障一个func只会执行一次","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://blog.zhaogangtao.cn//feed.xml" title="TommyZhao" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">TommyZhao</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="在golang中如何保障一个func只会执行一次">在golang中如何保障一个func只会执行一次</h1>
+
+<h2 id="背景">背景</h2>
+
+<p>在项目开发中，会遇到这样的场景：</p>
+
+<ol>
+  <li>使用单例模式初始化一些开销比较大的资源</li>
+</ol>
+
+<p>遇到这样的问题时，打击第一个想法就是使用sync.Once或者atomic.Value</p>
+
+<h3 id="如何使用atomic保障原子执行">如何使用atomic保障原子执行</h3>
+
+<p>大家都知道atomic使用CAS机制保障了操作的原子性，那么使用cas能够保障func只执行一次吗？如下面示例：</p>
+
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"sync"</span>
+	<span class="s">"sync/atomic"</span>
+<span class="p">)</span>
+
+<span class="k">var</span> <span class="p">(</span>
+	<span class="n">done</span> <span class="kt">uint32</span>
+	<span class="n">wg</span>   <span class="n">sync</span><span class="o">.</span><span class="n">WaitGroup</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+	<span class="k">go</span> <span class="n">oncedo</span><span class="p">()</span>
+	<span class="k">go</span> <span class="n">oncedo</span><span class="p">()</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Wait</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">oncedo</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">defer</span> <span class="n">wg</span><span class="o">.</span><span class="n">Done</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">atomic</span><span class="o">.</span><span class="n">CompareAndSwapUint32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">done</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">f</span><span class="p">()</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">f</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"func run"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>f()正常执行下这个逻辑是没有问题的。但是如果并发执行时，第一个抢到执行机会的goruntine在执行过程中f()，会导致后续的goroutine立即返回抢占失败；如果这里是初始化db链接，没有抢占到执行的函数返回后，业务还需要感知db是否可用。</p>
+
+<p>那么能否保证所有的goroutine在返回时都能保证f()是被调用完成呢？可否使用sync.Once来保障？可以的话sync.Once又是如何处理的呢？</p>
+
+<p>打开sync.Once的源码，我们可以看到它是用了两端提交的思想来保证的。</p>
+
+<ol>
+  <li>首先，检查done是否已经执行过</li>
+  <li>如果没有执行过，加锁执行f()</li>
+  <li>后续goroutine进来后，如果f()未执行完成，会被mutex同步阻塞</li>
+  <li>执行成功后，把done置为1，然后再释放锁</li>
+</ol>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">o</span> <span class="o">*</span><span class="n">Once</span><span class="p">)</span> <span class="n">Do</span><span class="p">(</span><span class="n">f</span> <span class="k">func</span><span class="p">())</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">atomic</span><span class="o">.</span><span class="n">LoadUint32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">o</span><span class="o">.</span><span class="n">done</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="n">o</span><span class="o">.</span><span class="n">doSlow</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">o</span> <span class="o">*</span><span class="n">Once</span><span class="p">)</span> <span class="n">doSlow</span><span class="p">(</span><span class="n">f</span> <span class="k">func</span><span class="p">())</span> <span class="p">{</span>
+	<span class="n">o</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="n">o</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">Unlock</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">done</span> <span class="o">==</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="k">defer</span> <span class="n">atomic</span><span class="o">.</span><span class="n">StoreUint32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">o</span><span class="o">.</span><span class="n">done</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+		<span class="n">f</span><span class="p">()</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">TommyZhao</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">TommyZhao</li><li><a class="u-email" href="mailto:zhaogangtao@gmail.com">zhaogangtao@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/zhaogangtao"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">zhaogangtao</span></a></li><li><a href="https://www.twitter.com/--"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">--</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

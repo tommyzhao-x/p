@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-01-29T12:20:43+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">TommyZhao</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">在golang中如何保障一个func只会执行一次</title><link href="http://localhost:4000/golang/2021/01/29/golang-sync-once.html" rel="alternate" type="text/html" title="在golang中如何保障一个func只会执行一次" /><published>2021-01-29T00:00:00+08:00</published><updated>2021-01-29T00:00:00+08:00</updated><id>http://localhost:4000/golang/2021/01/29/golang-sync-once</id><content type="html" xml:base="http://localhost:4000/golang/2021/01/29/golang-sync-once.html"><![CDATA[<h1 id="在golang中如何保障一个func只会执行一次">在golang中如何保障一个func只会执行一次</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="https://blog.zhaogangtao.cn//feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.zhaogangtao.cn//" rel="alternate" type="text/html" /><updated>2022-01-29T15:42:25+08:00</updated><id>https://blog.zhaogangtao.cn//feed.xml</id><title type="html">TommyZhao</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">在golang中如何保障一个func只会执行一次</title><link href="https://blog.zhaogangtao.cn//golang/2022/01/29/golang-sync-once.html" rel="alternate" type="text/html" title="在golang中如何保障一个func只会执行一次" /><published>2022-01-29T00:00:00+08:00</published><updated>2022-01-29T00:00:00+08:00</updated><id>https://blog.zhaogangtao.cn//golang/2022/01/29/golang-sync-once</id><content type="html" xml:base="https://blog.zhaogangtao.cn//golang/2022/01/29/golang-sync-once.html"><![CDATA[<h1 id="在golang中如何保障一个func只会执行一次">在golang中如何保障一个func只会执行一次</h1>
 
 <h2 id="背景">背景</h2>
 
@@ -6,22 +6,75 @@
 
 <ol>
   <li>使用单例模式初始化一些开销比较大的资源</li>
-  <li>分布式锁</li>
 </ol>
 
-<h2 id="如何正确解决这个冲突">如何正确解决这个冲突：</h2>
+<p>遇到这样的问题时，打击第一个想法就是使用sync.Once或者atomic.Value</p>
 
-<p>先给出答案：</p>
+<h3 id="如何使用atomic保障原子执行">如何使用atomic保障原子执行</h3>
 
-<blockquote>
-  <p>git merge –squash dev_base <br />
-git pull origin master  <br />
-git push origin dev_a</p>
-</blockquote>
+<p>大家都知道atomic使用CAS机制保障了操作的原子性，那么使用cas能够保障func只执行一次吗？如下面示例：</p>
 
-<h2 id="这里发生了什么">这里发生了什么？</h2>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
-<p>todo</p>]]></content><author><name></name></author><category term="golang" /><summary type="html"><![CDATA[在golang中如何保障一个func只会执行一次]]></summary></entry><entry><title type="html">如何解决git squash merge冲突</title><link href="http://localhost:4000/gitl/2019/03/01/git-squash-merge.html" rel="alternate" type="text/html" title="如何解决git squash merge冲突" /><published>2019-03-01T00:00:00+08:00</published><updated>2019-03-01T00:00:00+08:00</updated><id>http://localhost:4000/gitl/2019/03/01/git-squash-merge</id><content type="html" xml:base="http://localhost:4000/gitl/2019/03/01/git-squash-merge.html"><![CDATA[<h1 id="如何解决git-squash-merge冲突">如何解决git squash merge冲突</h1>
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"sync"</span>
+	<span class="s">"sync/atomic"</span>
+<span class="p">)</span>
+
+<span class="k">var</span> <span class="p">(</span>
+	<span class="n">done</span> <span class="kt">uint32</span>
+	<span class="n">wg</span>   <span class="n">sync</span><span class="o">.</span><span class="n">WaitGroup</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+	<span class="k">go</span> <span class="n">oncedo</span><span class="p">()</span>
+	<span class="k">go</span> <span class="n">oncedo</span><span class="p">()</span>
+	<span class="n">wg</span><span class="o">.</span><span class="n">Wait</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">oncedo</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">defer</span> <span class="n">wg</span><span class="o">.</span><span class="n">Done</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">atomic</span><span class="o">.</span><span class="n">CompareAndSwapUint32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">done</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">f</span><span class="p">()</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">f</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"func run"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>f()正常执行下这个逻辑是没有问题的。但是如果并发执行时，第一个抢到执行机会的goruntine在执行过程中f()，会导致后续的goroutine立即返回抢占失败；如果这里是初始化db链接，没有抢占到执行的函数返回后，业务还需要感知db是否可用。</p>
+
+<p>那么能否保证所有的goroutine在返回时都能保证f()是被调用完成呢？可否使用sync.Once来保障？可以的话sync.Once又是如何处理的呢？</p>
+
+<p>打开sync.Once的源码，我们可以看到它是用了两端提交的思想来保证的。</p>
+
+<ol>
+  <li>首先，检查done是否已经执行过</li>
+  <li>如果没有执行过，加锁执行f()</li>
+  <li>后续goroutine进来后，如果f()未执行完成，会被mutex同步阻塞</li>
+  <li>执行成功后，把done置为1，然后再释放锁</li>
+</ol>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">o</span> <span class="o">*</span><span class="n">Once</span><span class="p">)</span> <span class="n">Do</span><span class="p">(</span><span class="n">f</span> <span class="k">func</span><span class="p">())</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">atomic</span><span class="o">.</span><span class="n">LoadUint32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">o</span><span class="o">.</span><span class="n">done</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="n">o</span><span class="o">.</span><span class="n">doSlow</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">o</span> <span class="o">*</span><span class="n">Once</span><span class="p">)</span> <span class="n">doSlow</span><span class="p">(</span><span class="n">f</span> <span class="k">func</span><span class="p">())</span> <span class="p">{</span>
+	<span class="n">o</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="n">o</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">Unlock</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">done</span> <span class="o">==</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="k">defer</span> <span class="n">atomic</span><span class="o">.</span><span class="n">StoreUint32</span><span class="p">(</span><span class="o">&amp;</span><span class="n">o</span><span class="o">.</span><span class="n">done</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+		<span class="n">f</span><span class="p">()</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>]]></content><author><name></name></author><category term="golang" /><summary type="html"><![CDATA[在golang中如何保障一个func只会执行一次]]></summary></entry><entry><title type="html">如何解决git squash merge冲突</title><link href="https://blog.zhaogangtao.cn//gitl/2019/03/01/git-squash-merge.html" rel="alternate" type="text/html" title="如何解决git squash merge冲突" /><published>2019-03-01T00:00:00+08:00</published><updated>2019-03-01T00:00:00+08:00</updated><id>https://blog.zhaogangtao.cn//gitl/2019/03/01/git-squash-merge</id><content type="html" xml:base="https://blog.zhaogangtao.cn//gitl/2019/03/01/git-squash-merge.html"><![CDATA[<h1 id="如何解决git-squash-merge冲突">如何解决git squash merge冲突</h1>
 
 <h2 id="背景">背景</h2>
 
@@ -55,7 +108,7 @@ git push origin dev_a</p>
 
 <h2 id="这里发生了什么">这里发生了什么？</h2>
 
-<p>todo</p>]]></content><author><name></name></author><category term="gitl" /><summary type="html"><![CDATA[如何解决git squash merge冲突]]></summary></entry><entry><title type="html">Java项目问题排查规则</title><link href="http://localhost:4000/mvn/2018/07/10/java-product-troubshoting.html" rel="alternate" type="text/html" title="Java项目问题排查规则" /><published>2018-07-10T09:34:38+08:00</published><updated>2018-07-10T09:34:38+08:00</updated><id>http://localhost:4000/mvn/2018/07/10/java-product-troubshoting</id><content type="html" xml:base="http://localhost:4000/mvn/2018/07/10/java-product-troubshoting.html"><![CDATA[<h2 id="问题分类">问题分类</h2>
+<p>todo</p>]]></content><author><name></name></author><category term="gitl" /><summary type="html"><![CDATA[如何解决git squash merge冲突]]></summary></entry><entry><title type="html">Java项目问题排查规则</title><link href="https://blog.zhaogangtao.cn//mvn/2018/07/10/java-product-troubshoting.html" rel="alternate" type="text/html" title="Java项目问题排查规则" /><published>2018-07-10T09:34:38+08:00</published><updated>2018-07-10T09:34:38+08:00</updated><id>https://blog.zhaogangtao.cn//mvn/2018/07/10/java-product-troubshoting</id><content type="html" xml:base="https://blog.zhaogangtao.cn//mvn/2018/07/10/java-product-troubshoting.html"><![CDATA[<h2 id="问题分类">问题分类</h2>
 
 <ol>
   <li>CPU占用率高</li>
@@ -80,7 +133,7 @@ git push origin dev_a</p>
   <li>找到对应问题的线程后执行，jmap -heap:format=b file=mem.bin pid</li>
   <li>使用mat或者jprofiler导入dump后，分析</li>
   <li>观察占用率较高的对象分布，基本可以确定问题</li>
-</ol>]]></content><author><name></name></author><category term="mvn" /><summary type="html"><![CDATA[问题分类]]></summary></entry><entry><title type="html">Deploy jar to mvn nexus repository</title><link href="http://localhost:4000/mvn/2018/01/02/mvn-deplpy-to-nexus.html" rel="alternate" type="text/html" title="Deploy jar to mvn nexus repository" /><published>2018-01-02T17:34:38+08:00</published><updated>2018-01-02T17:34:38+08:00</updated><id>http://localhost:4000/mvn/2018/01/02/mvn-deplpy-to-nexus</id><content type="html" xml:base="http://localhost:4000/mvn/2018/01/02/mvn-deplpy-to-nexus.html"><![CDATA[<h1 id="deploy-jar-to-mvn-nexus-repository">Deploy jar to mvn nexus repository</h1>
+</ol>]]></content><author><name></name></author><category term="mvn" /><summary type="html"><![CDATA[问题分类]]></summary></entry><entry><title type="html">Deploy jar to mvn nexus repository</title><link href="https://blog.zhaogangtao.cn//mvn/2018/01/02/mvn-deplpy-to-nexus.html" rel="alternate" type="text/html" title="Deploy jar to mvn nexus repository" /><published>2018-01-02T17:34:38+08:00</published><updated>2018-01-02T17:34:38+08:00</updated><id>https://blog.zhaogangtao.cn//mvn/2018/01/02/mvn-deplpy-to-nexus</id><content type="html" xml:base="https://blog.zhaogangtao.cn//mvn/2018/01/02/mvn-deplpy-to-nexus.html"><![CDATA[<h1 id="deploy-jar-to-mvn-nexus-repository">Deploy jar to mvn nexus repository</h1>
 
 <h2 id="add-server-config-to-settingsxml">Add server config to settings.xml</h2>
 <p>进入.m2文件夹，更改settings.xml，添加server配置</p>
@@ -121,10 +174,10 @@ git push origin dev_a</p>
         &lt;/execution&gt;
     &lt;/executions&gt;
 &lt;/plugin&gt;
-</code></pre></div></div>]]></content><author><name></name></author><category term="mvn" /><summary type="html"><![CDATA[Deploy jar to mvn nexus repository]]></summary></entry><entry><title type="html">Golang compile tool</title><link href="http://localhost:4000/go/2017/11/21/go-tool-compile.html" rel="alternate" type="text/html" title="Golang compile tool" /><published>2017-11-21T20:34:38+08:00</published><updated>2017-11-21T20:34:38+08:00</updated><id>http://localhost:4000/go/2017/11/21/go-tool-compile</id><content type="html" xml:base="http://localhost:4000/go/2017/11/21/go-tool-compile.html"><![CDATA[<h1 id="golang-compile-tool">Golang compile tool</h1>
+</code></pre></div></div>]]></content><author><name></name></author><category term="mvn" /><summary type="html"><![CDATA[Deploy jar to mvn nexus repository]]></summary></entry><entry><title type="html">Golang compile tool</title><link href="https://blog.zhaogangtao.cn//go/2017/11/21/go-tool-compile.html" rel="alternate" type="text/html" title="Golang compile tool" /><published>2017-11-21T20:34:38+08:00</published><updated>2017-11-21T20:34:38+08:00</updated><id>https://blog.zhaogangtao.cn//go/2017/11/21/go-tool-compile</id><content type="html" xml:base="https://blog.zhaogangtao.cn//go/2017/11/21/go-tool-compile.html"><![CDATA[<h1 id="golang-compile-tool">Golang compile tool</h1>
 
 <h2 id="command">Command</h2>
-<p>go tool compile -m -importmap go-common/log=tlog/vendor/go-common/log -D /Users/tommy/work/src/tlog  -I /Users/tommy/work/pkg/darwin_amd64  -S  main.go &gt; test/test1.s</p>]]></content><author><name></name></author><category term="go" /><summary type="html"><![CDATA[Golang compile tool]]></summary></entry><entry><title type="html">Golang获取本机IP地址</title><link href="http://localhost:4000/go/2017/08/29/go-internal-ip-address.html" rel="alternate" type="text/html" title="Golang获取本机IP地址" /><published>2017-08-29T20:34:38+08:00</published><updated>2017-08-29T20:34:38+08:00</updated><id>http://localhost:4000/go/2017/08/29/go-internal-ip-address</id><content type="html" xml:base="http://localhost:4000/go/2017/08/29/go-internal-ip-address.html"><![CDATA[<h1 id="golang获取本机ip地址">Golang获取本机IP地址</h1>
+<p>go tool compile -m -importmap go-common/log=tlog/vendor/go-common/log -D /Users/tommy/work/src/tlog  -I /Users/tommy/work/pkg/darwin_amd64  -S  main.go &gt; test/test1.s</p>]]></content><author><name></name></author><category term="go" /><summary type="html"><![CDATA[Golang compile tool]]></summary></entry><entry><title type="html">Golang获取本机IP地址</title><link href="https://blog.zhaogangtao.cn//go/2017/08/29/go-internal-ip-address.html" rel="alternate" type="text/html" title="Golang获取本机IP地址" /><published>2017-08-29T20:34:38+08:00</published><updated>2017-08-29T20:34:38+08:00</updated><id>https://blog.zhaogangtao.cn//go/2017/08/29/go-internal-ip-address</id><content type="html" xml:base="https://blog.zhaogangtao.cn//go/2017/08/29/go-internal-ip-address.html"><![CDATA[<h1 id="golang获取本机ip地址">Golang获取本机IP地址</h1>
 
 <h2 id="引子">引子</h2>
 <p>最近有次灰度发版后，发现RPC client获取到一个莫名的RPC server ip，通过服务注册的管理界面也能看到这个IP，排查后发现是当前灰度的机器，但是此机器的IP并不是注册的ip。</p>
@@ -190,7 +243,7 @@ func InternalIP() string {
 	return ""
 }
 
-</code></pre></div></div>]]></content><author><name></name></author><category term="go" /><summary type="html"><![CDATA[Golang获取本机IP地址]]></summary></entry><entry><title type="html">Kafka中有两种consumer接口</title><link href="http://localhost:4000/kafka/2017/04/27/kafka-consumer.html" rel="alternate" type="text/html" title="Kafka中有两种consumer接口" /><published>2017-04-27T20:34:38+08:00</published><updated>2017-04-27T20:34:38+08:00</updated><id>http://localhost:4000/kafka/2017/04/27/kafka-consumer</id><content type="html" xml:base="http://localhost:4000/kafka/2017/04/27/kafka-consumer.html"><![CDATA[<h1 id="kafka-consumer">Kafka consumer</h1>
+</code></pre></div></div>]]></content><author><name></name></author><category term="go" /><summary type="html"><![CDATA[Golang获取本机IP地址]]></summary></entry><entry><title type="html">Kafka中有两种consumer接口</title><link href="https://blog.zhaogangtao.cn//kafka/2017/04/27/kafka-consumer.html" rel="alternate" type="text/html" title="Kafka中有两种consumer接口" /><published>2017-04-27T20:34:38+08:00</published><updated>2017-04-27T20:34:38+08:00</updated><id>https://blog.zhaogangtao.cn//kafka/2017/04/27/kafka-consumer</id><content type="html" xml:base="https://blog.zhaogangtao.cn//kafka/2017/04/27/kafka-consumer.html"><![CDATA[<h1 id="kafka-consumer">Kafka consumer</h1>
 
 <p>Kafka中有两种consumer接口，分别为Low-level API和High-levelAPI</p>
 
@@ -202,7 +255,7 @@ func InternalIP() string {
 <h2 id="high-level-api-zookeeperconsumerconnector">High-level API ZookeeperConsumerConnector</h2>
 <blockquote>
   <p>High-level API使用比较简单，已经封装了对partition和offset的管理，默认是会定期自动commit offset，这样可能会丢数据的，因为consumer可能拿到数据没有处理完crash。 High-level API接口的特点，自动管理，使用简单，但是对Kafka的控制不够灵活。</p>
-</blockquote>]]></content><author><name></name></author><category term="kafka" /><summary type="html"><![CDATA[Kafka consumer]]></summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2017/04/27/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-04-27T10:34:38+08:00</published><updated>2017-04-27T10:34:38+08:00</updated><id>http://localhost:4000/jekyll/update/2017/04/27/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2017/04/27/welcome-to-jekyll.html"><![CDATA[<p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+</blockquote>]]></content><author><name></name></author><category term="kafka" /><summary type="html"><![CDATA[Kafka consumer]]></summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="https://blog.zhaogangtao.cn//jekyll/update/2017/04/27/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-04-27T10:34:38+08:00</published><updated>2017-04-27T10:34:38+08:00</updated><id>https://blog.zhaogangtao.cn//jekyll/update/2017/04/27/welcome-to-jekyll</id><content type="html" xml:base="https://blog.zhaogangtao.cn//jekyll/update/2017/04/27/welcome-to-jekyll.html"><![CDATA[<p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
 
 <p>To add new posts, simply add a file in the <code class="language-plaintext highlighter-rouge">_posts</code> directory that follows the convention <code class="language-plaintext highlighter-rouge">YYYY-MM-DD-name-of-post.ext</code> and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
 
