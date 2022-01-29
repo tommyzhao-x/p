@@ -1,0 +1,5 @@
+I"<h1 id="golang-compile-tool">Golang compile tool</h1>
+
+<h2 id="command">Command</h2>
+<p>go tool compile -m -importmap go-common/log=tlog/vendor/go-common/log -D /Users/tommy/work/src/tlog  -I /Users/tommy/work/pkg/darwin_amd64  -S  main.go &gt; test/test1.s</p>
+:ET

@@ -1,0 +1,27 @@
+I"|<h2 id="问题分类">问题分类</h2>
+
+<ol>
+  <li>CPU占用率高</li>
+  <li>内存泄露</li>
+</ol>
+
+<h2 id="cpu占用率高">CPU占用率高</h2>
+
+<ol>
+  <li>在容器内执行top命令，找到cpu使用率高的pid</li>
+  <li>执行top -pid xxx，查看当前pid2的具体信息</li>
+  <li>按照cpu占用率排序，找到占有率最高的pid</li>
+  <li>使用jstack pid打印当前java线程的执行情况</li>
+  <li>命令行printf %0x pid2查看对应的16进制nid</li>
+  <li>这jstack的thread dump中观察对应的栈信息</li>
+</ol>
+
+<h2 id="内存使用率高">内存使用率高</h2>
+
+<ol>
+  <li>jps -lvm找到当前容器运行的java线程</li>
+  <li>找到对应问题的线程后执行，jmap -heap:format=b file=mem.bin pid</li>
+  <li>使用mat或者jprofiler导入dump后，分析</li>
+  <li>观察占用率较高的对象分布，基本可以确定问题</li>
+</ol>
+:ET

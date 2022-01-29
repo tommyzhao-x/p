@@ -1,0 +1,43 @@
+I"n<h1 id="deploy-jar-to-mvn-nexus-repository">Deploy jar to mvn nexus repository</h1>
+
+<h2 id="add-server-config-to-settingsxml">Add server config to settings.xml</h2>
+<p>进入.m2文件夹，更改settings.xml，添加server配置</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;server&gt;
+       &lt;id&gt;my-nexus-release-server&lt;/id&gt;
+       &lt;username&gt;xxxx&lt;/username&gt;
+       &lt;password&gt;xxxx&lt;/password&gt;
+     &lt;/server&gt;
+</code></pre></div></div>
+<h2 id="更改pomxml">更改pom.xml</h2>
+<p>新增deploy仓库配置：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;distributionManagement&gt;
+		&lt;repository&gt;
+			&lt;id&gt;my-nexus-release-server&lt;/id&gt;
+			&lt;name&gt;Internal Releases&lt;/name&gt;
+			&lt;url&gt;http://nexus.my.co/content/repositories/releases&lt;/url&gt;
+		&lt;/repository&gt;
+		&lt;snapshotRepository&gt;
+			&lt;id&gt;my-nexus-snapshots-server&lt;/id&gt;
+			&lt;name&gt;Internal Snapshots&lt;/name&gt;
+			&lt;url&gt;http://nexus.my.co/content/repositories/snapshots&lt;/url&gt;
+		&lt;/snapshotRepository&gt;
+	&lt;/distributionManagement&gt;
+</code></pre></div></div>
+<p>如果要上传source包，新增：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;plugin&gt;
+    &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.0.1&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;attach&gt;true&lt;/attach&gt;
+    &lt;/configuration&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;phase&gt;compile&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;jar&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;
+</code></pre></div></div>
+:ET
