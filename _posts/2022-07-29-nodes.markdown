@@ -320,5 +320,5 @@ golang.org
 godoc.org
 =================
 
-其他国内的书我看的比较少，最推荐上面的Effective Go，另外了解下B站的框架：
+另外了解下B站的框架：
 https://github.com/bilibili/kratos
